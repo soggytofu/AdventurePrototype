@@ -25,17 +25,37 @@ class AdventureScene extends Phaser.Scene {
             .setStyle({ fontSize: `${3 * this.s}px` })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
         
-        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
+        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.2)
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
-        this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.66)
+        this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.5)
             .setStyle({ fontSize: `${2 * this.s}px` })
             .setText("Inventory")
             .setAlpha(0);
 
         this.inventoryTexts = [];
         this.updateInventory();
+
+        //let sceneIndex = {'Intro', 'Room1', 'Room2', 'Outro'};
+
+        this.nextSceneButton = this.add.text(this.w * 0.75 + this.s, this.h * 0.8)
+        .setStyle({ fontSize: `${2 * this.s}px` })
+        .setText("Next Area")
+        .setInteractive({useHandCursor: true})
+        .on('pointerover', () => {
+            this.nextSceneButton.setColor('#ff3400');
+            this.nextSceneButton.setScale(1.2);
+        })
+        .on('pointerout', () => {
+            this.nextSceneButton.setColor('#ffffff');
+            this.nextSceneButton.setScale(1);
+        })
+        .on('pointerdown', () => {
+            this.gotoScene('room2');
+            console.log(scenes())
+        })
+        ;
 
         this.add.text(this.w-3*this.s, this.h-3*this.s, "📺")
             .setStyle({ fontSize: `${2 * this.s}px` })
@@ -81,7 +101,7 @@ class AdventureScene extends Phaser.Scene {
             this.inventoryTexts.forEach((t) => t.destroy());
         }
         this.inventoryTexts = [];
-        let h = this.h * 0.66 + 3 * this.s;
+        let h = this.h * 0.5 + 3 * this.s;
         this.inventory.forEach((e, i) => {
             let text = this.add.text(this.w * 0.75 + 2 * this.s, h, e)
                 .setStyle({ fontSize: `${1.5 * this.s}px` })
