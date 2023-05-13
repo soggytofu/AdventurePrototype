@@ -1,5 +1,7 @@
 class AdventureScene extends Phaser.Scene {
 
+    static count = 1;
+
     init(data) {
         this.inventory = data.inventory || [];
     }
@@ -10,13 +12,14 @@ class AdventureScene extends Phaser.Scene {
     }
 
     create() {
+        
         this.transitionDuration = 1000;
 
         this.w = this.game.config.width;
         this.h = this.game.config.height;
         this.s = this.game.config.width * 0.01;
 
-        this.cameras.main.setBackgroundColor('#444');
+        this.cameras.main.setBackgroundColor('#000000');
         this.cameras.main.fadeIn(this.transitionDuration, 0, 0, 0);
 
         this.add.rectangle(this.w * 0.75, 0, this.w * 0.25, this.h).setOrigin(0, 0).setFillStyle(0);
@@ -37,8 +40,6 @@ class AdventureScene extends Phaser.Scene {
         this.inventoryTexts = [];
         this.updateInventory();
 
-        //let sceneIndex = {'Intro', 'Room1', 'Room2', 'Outro'};
-
         this.nextSceneButton = this.add.text(this.w * 0.75 + this.s, this.h * 0.8)
         .setStyle({ fontSize: `${2 * this.s}px` })
         .setText("Next Area")
@@ -52,8 +53,9 @@ class AdventureScene extends Phaser.Scene {
             this.nextSceneButton.setScale(1);
         })
         .on('pointerdown', () => {
-            this.gotoScene('room2');
-            console.log(scenes())
+            AdventureScene.count++;
+            this.gotoScene(game.scene.scenes[AdventureScene.count].scene.key);
+            //console.log(AdventureScene.count);
         })
         ;
 
