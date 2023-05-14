@@ -235,6 +235,7 @@ class Intro extends Phaser.Scene {
     preload() {
         this.w = this.game.config.width;
         this.h = this.game.config.height;
+        this.s = this.game.config.width * 0.01;
 
         this.load.path = './assets/';
         this.load.image('Background', 'BackgroundPaimon.png');
@@ -277,6 +278,12 @@ class Intro extends Phaser.Scene {
                     this.scene.start('room1');
                 });
             });
+            let StartMessage = this.add.text(this.w * 0.7, this.h * 0.2, "Diemon wants to eat you. You have to escape and run away")
+            .setFontSize(this.s * 3)
+            .setWordWrapWidth(this.w * 0.3 - 2 * this.s)
+            .on('pointerover', () => {
+                this.showMessage("GG Git Gud")
+            })
     }
 }
 
