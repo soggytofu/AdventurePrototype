@@ -52,7 +52,7 @@ class Room1 extends AdventureScene {
 
 class Room2 extends AdventureScene {
     constructor() {
-        super("room2", "Running Away");
+        super("room2", "Watered Down Bar");
     }
     preload() {
         this.load.path = './assets/';
@@ -113,50 +113,120 @@ class Room3 extends AdventureScene {
 
     preload() {
         this.load.path = './assets/';
-        this.load.image('Office', 'office.png');
-        this.load.image('Cube', 'jimmie.png');
-        this.load.image('', 'bords.png');
+        this.load.image('Office', 'Office.png');
+        this.load.image('Cube', 'cube.png');
         }
 
 
     onEnter() {
 
-        let Manstot = this.add.image(this.w * 0.4, this.h * 0.5, 'Manstot')
+        let Office = this.add.image(this.w * 0.3, this.h * 0.5, 'Office')
         .setDepth(-1)
         .setScale(1);
 
-        let Jimmie = this.add.image(this.w * 0.15, this.h * 0.6, 'Jimmie')
-            .setScale(.8)
+        let Cube = this.add.image(this.w * 0.58, this.h * 0.18, 'Cube')
+            .setScale(.35)
             .setInteractive()
-            .on('pointerover', () => this.showMessage("I'm Jimmie, and I like watching the birds"))
+            .on('pointerover', () => this.showMessage("A strange cube"))
             .on('pointerdown', () => {
-                if (this.hasItem("Pidgeon Meat")) {
-                    this.showMessage("Hopefully they'll be back, like daddy");
-                } else {
-                    this.showMessage("Don't scare the birds");
-                }
+            this.showMessage("It looks like it requires a high IQ to solve")
+            this.gainItem('IQ Cube');
+            this.tweens.add({
+                targets: Cube,
+                y: `-=${2 * this.s}`,
+                alpha: { from: 1, to: 0 },
+                duration: 500,
+                onComplete: () => Cube.destroy()});
             });
-
-        let pidgeon = this.add.image(this.w * 0.5, this.h * 0.6, 'Birds')
-            .setScale(.4)
-            .setInteractive()
-            .on('pointerover', () => {
-                this.showMessage("Birds")
-            })
-            .on('pointerdown', () => {
-                this.showMessage("You took Jimmie's birds");
-                this.gainItem('Pidgeon Meat');
-                this.tweens.add({
-                    targets: pidgeon,
-                    y: `-=${2 * this.s}`,
-                    alpha: { from: 1, to: 0 },
-                    duration: 500,
-                    onComplete: () => pidgeon.destroy()
-                });
-            });
-
     }
 }
+
+class Room4 extends AdventureScene {
+    constructor() {
+        super("room4", "The Church");
+    }
+
+    preload() {
+        this.load.path = './assets/';
+        this.load.image('Church', 'Church.png');
+        this.load.image('Barbruh', 'Barbruh.png');
+        }
+
+
+    onEnter() {
+        let mesageCount = 0;
+
+        let Church = this.add.image(this.w * 0.4, this.h * 0.5, 'Church')
+        .setDepth(-1)
+        .setScale(1);
+
+        let Barbruh = this.add.image(this.w * 0.3, this.h * 0.7, 'Barbruh')
+            .setScale(.3)
+            .setInteractive()
+            .on('pointerover', () => this.showMessage("Diemon is trying to hunt you down? I can help exorcise it"))
+            .on('pointerdown', () => {
+                if (this.hasItem("IQ Cube") && this.hasItem("Pidgeon Meat") && mesageCount == 2) {
+                    this.showMessage("This is perfect! We can trap Diemon with this, go on, I'll set the trap");
+                    this.loseItem("IQ Cube");
+                    this.loseItem("Pidgeon Meat");
+                    AdventureScene.count++;
+                    console.log(AdventureScene.count);
+                }
+                else if (this.hasItem("Drunkard") && (mesageCount == 1)) {
+                    this.showMessage("A pair of fresh legs? That can help me be taller. Now I just need some food and something to stimulate Diemon's brain");
+                    this.loseItem("Drunkard");
+                    mesageCount++;
+                    console.log(mesageCount);
+                } 
+                else if (mesageCount == 0) {
+                    this.showMessage("If you can help me be as tall as my big sister, I'll help");
+                    mesageCount++;
+                    console.log(mesageCount);
+                }
+                else if (mesageCount > 0){
+                    this.showMessage("You don't have what I need. Go on ahead, I'll try my best to hold on");
+                    console.log(mesageCount);
+                }
+            });
+    }
+}
+
+class Room5 extends AdventureScene {
+    constructor() {
+        super("room5", "You Died");
+    }
+    
+    onEnter() {
+
+        AdventureScene.count++;
+        this.cameras.main.setBackgroundColor('#c4bbb4');
+        let DeathMessage = this.add.text(this.w * 0.1, this.h * 0.3, "It is your end, Barbruh could not stop Diemon from catching you and eating you like a snack")
+            .setFontSize(this.s * 3)
+            .setInteractive()
+            .setWordWrapWidth(this.w * 0.5 - 2 * this.s)
+            .on('pointerover', () => {
+                this.showMessage("GG Git Gud")
+            })
+    }
+}
+
+class Room6 extends AdventureScene {
+    constructor() {
+        super("room6", "You Won");
+    }
+    
+    onEnter() {
+        this.cameras.main.setBackgroundColor('#c4bbb4');
+        let WinMessage = this.add.text(this.w * 0.1, this.h * 0.3, "You managed to defeat Diemon with the power of braincells and food")
+            .setFontSize(this.s * 3)
+            .setInteractive()
+            .setWordWrapWidth(this.w * 0.5 - 2 * this.s)
+            .on('pointerover', () => {
+                this.showMessage("GG EZ")
+            })
+    }
+}
+
 
 class Intro extends Phaser.Scene {
     constructor() {
@@ -217,7 +287,11 @@ class Outro extends Phaser.Scene {
     create() {
         this.add.text(50, 50, "That's all!").setFontSize(50);
         this.add.text(50, 100, "Click anywhere to restart.").setFontSize(20);
-        this.input.on('pointerdown', () => this.scene.start('intro'));
+        this.input.on('pointerdown', () => {
+        this.scene.start('intro')
+        AdventureScene.count = 1;
+        });
+        
     }
 }
 
@@ -229,10 +303,7 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Room2, Intro, Room1, Outro],
-    global: { 
-        count: 0 
-    },
+    scene: [Intro, Room1, Room2, Room3, Room4, Room5, Room6, Outro],
     title: "Adventure Game",
 
 });

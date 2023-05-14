@@ -28,7 +28,7 @@ class AdventureScene extends Phaser.Scene {
             .setStyle({ fontSize: `${3 * this.s}px` })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
         
-        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.2)
+        this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.15)
             .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
@@ -40,7 +40,7 @@ class AdventureScene extends Phaser.Scene {
         this.inventoryTexts = [];
         this.updateInventory();
 
-        this.nextSceneButton = this.add.text(this.w * 0.75 + this.s, this.h * 0.8)
+        this.nextSceneButton = this.add.text(this.w * 0.75 + this.s, this.h * 0.95)
         .setStyle({ fontSize: `${2 * this.s}px` })
         .setText("Next Area")
         .setInteractive({useHandCursor: true})
@@ -81,7 +81,7 @@ class AdventureScene extends Phaser.Scene {
             targets: this.messageBox,
             alpha: { from: 1, to: 0 },
             easing: 'Quintic.in',
-            duration: 4 * this.transitionDuration
+            duration: 6 * this.transitionDuration
         });
     }
 
